@@ -2,17 +2,20 @@
 #Installation script for Solus 4 - Version 1.0
 #https://github.com/abnazhor/solus-scripts
 
-#Declaring colors to be used.
+#Declared colours to be used in the following lines.
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 LBLUE='\033[1;34m'
 NC='\033[0m'
 
-gamePack=(lutris steam)
-mediaPack=(krita gimp)
+gamePack=(lutris steam xboxdrv)
+mediaPack=(krita gimp vlc lollypop peek)
 devPack=(vscode gitkraken)
+socialPack=(telegram)
 
+
+#Generic function to install any array of apps
 function installPack() {
     printf "${YELLOW}Installing media apps...\n";
     for app in $@;
@@ -23,6 +26,7 @@ function installPack() {
     printf "${GREEN}DONE!\n${NC}";
 }
 
+#Specific functions for every pack, as they can contain programs that are not in the repositories in the future.
 function installDevPack() {
     printf "${YELLOW}Installing Developer Pack...\n";
     installPack "${devPack[@]}";
@@ -38,6 +42,12 @@ function installMediaPack() {
     installPack "${mediaPack[@]}";
 }
 
+function installSocialPack() {
+    printf "${YELLOW} Installing ${GREEN}Social Pack${YELLOW}...\n";
+    installPack "${socialPack[@]}";
+}
+
+#Makes a full installation with all the available packs.
 function fullInstallation() {
     printf "${LBLUE}Ready to make a ${YELLOW}FULL INSTALLATION${LBLUE}...\n";
     printf "${YELLOW}This will take some time...";
@@ -47,6 +57,7 @@ function fullInstallation() {
     installGamePack;
 }
 
+#Shows packs in a menu and make them selectable.
 function showPacks() {
     user_input="";
     printf "${LBLUE}The packs available right now are:\n";
@@ -76,15 +87,30 @@ function showPacks() {
     menu;
 }
 
-function menu() {
-    user_input="";
+#Installs developer packages. 
+function installSysDevel() {
+    printf "${YELLOW}Installing System Developer Pack...${NC}\n";
+    sudo eopkg install -c system.devel;
+    clear;
+    printf "${GREEN}DONE!\n${NC}";
+}
+
+#Shows up menu text every time it is needed, not once.
+function menuTexts() {
     printf "${LBLUE}Hello! This is the base app installer script for ${GREEN}Solus 4${LBLUE}!\n";
     printf "${YELLOW}What can I do for you today?\n";
     printf "${YELLOW}1. ${GREEN}See what packs are available right now\n";
-    printf "${YELLOW}2. ${GREEN}Install everything!\n"
-    printf "${YELLOW}3. ${RED}Exit the installer\n${NC}";
-    while [ "$user_input" != "3" ];
+    printf "${YELLOW}2. ${GREEN}Install everything!\n";
+    printf "${YELLOW}3. ${GREEN}Install System Developer Pack\n";
+    printf "${YELLOW}4. ${RED}Exit the installer\n${NC}";
+}
+
+#Loads menu and waits for response to do any action.
+function menu() {
+    user_input="";
+    while [ "$user_input" != "4" ];
     do
+        menuTexts;
         read user_input;
         case "$user_input" in
             1)
@@ -94,6 +120,9 @@ function menu() {
                 fullInstallation;
             ;;
             3)
+                installSysDevel;
+            ;;
+            4)
                 echo "See you soon!";
             ;;
         esac;
@@ -101,4 +130,5 @@ function menu() {
     done;
 }
 
+#Start of the script.
 menu;
