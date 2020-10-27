@@ -20,3 +20,7 @@ function error() {
 function success() {
     printf "${GREEN}$1\n${NC}";
 }
+
+function warn() {
+    printf "${YELLOW}$1\n${NC}";
+}
