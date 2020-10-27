@@ -1,5 +1,5 @@
 #!/bin/bash
-#Installation script for Typora - Abnazhor
+#Installation script for Minecraft - Abnazhor
 #https://github.com/abnazhor/solus-scripts
 
 #Imports custom logger functions to display information
