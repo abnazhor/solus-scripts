@@ -23,7 +23,7 @@ success "Done.";
 user_input="";
 while [ "$user_input" != "N" ] && [ "$user_input" != "Y" ];
 do
-    info "Building has been successfull. Would you like to install it? Y/N";
+    info "Building has been successful. Would you like to install it? Y/N";
     read user_input;
     if [ "$user_input" == "Y" ]
     then
